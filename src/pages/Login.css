@@ -1,0 +1,31 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/*.LoginConten{
+
+}*/
+
+.Content{
+    width: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    margin: 0 auto;
+    margin-top: 14%;
+    padding: 50px;
+    border-radius: 8px;
+    box-shadow: 1px 1px 10px 4px  rgba(0, 0, 0, 0.5);
+}
+
+.Item{
+    width: 400px;
+}
+
+.entrada{
+    border: 1px solid black;
+}
+

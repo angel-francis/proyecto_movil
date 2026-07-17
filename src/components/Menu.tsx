@@ -11,7 +11,15 @@ import {
 } from '@ionic/react';
 
 import { useLocation } from 'react-router-dom';
-import { archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
+import {
+  archiveOutline, archiveSharp,
+  bookmarkOutline,
+  heartOutline, heartSharp,
+  mailOutline, mailSharp,
+  paperPlaneOutline, paperPlaneSharp,
+  trashOutline, trashSharp,
+  warningOutline, warningSharp
+} from 'ionicons/icons';
 import './Menu.css';
 
 interface AppPage {
@@ -19,48 +27,80 @@ interface AppPage {
   iosIcon: string;
   mdIcon: string;
   title: string;
+  roles: string[];
 }
+
+//Obtener el rol correctamente
+const rol = localStorage.getItem('rol') || 'Encargado de almacen';
 
 const appPages: AppPage[] = [
   {
-    title: 'Inbox',
-    url: '/folder/Inbox',
+    title: 'Products',
+    url: '/Administrador/Productos',
     iosIcon: mailOutline,
-    mdIcon: mailSharp
+    mdIcon: mailSharp,
+    roles: ['Administrador']
   },
   {
-    title: 'Outbox',
-    url: '/folder/Outbox',
+    title: 'Add Product',
+    url: '/Administrador/AgregarProducto',
     iosIcon: paperPlaneOutline,
-    mdIcon: paperPlaneSharp
+    mdIcon: paperPlaneSharp,
+    roles: ['Administrador']
   },
   {
-    title: 'Favorites',
-    url: '/folder/Favorites',
-    iosIcon: heartOutline,
-    mdIcon: heartSharp
-  },
-  {
-    title: 'Archived',
-    url: '/folder/Archived',
+    title: 'Empleados Almacen',
+    url: '/Administrador/MostrarOAE',
     iosIcon: archiveOutline,
-    mdIcon: archiveSharp
+    mdIcon: archiveSharp,
+    roles: ['Administrador','Encargado de almacen']
   },
   {
-    title: 'Trash',
-    url: '/folder/Trash',
-    iosIcon: trashOutline,
-    mdIcon: trashSharp
+    title: 'Empleados Almacen',
+    url: '/Administrador/EmpleadosAlmacen',
+    iosIcon: heartOutline,
+    mdIcon: heartSharp,
+    roles: ['Administrador']
   },
   {
-    title: 'Spam',
-    url: '/folder/Spam',
-    iosIcon: warningOutline,
-    mdIcon: warningSharp
+    title: 'Productos Almacen',
+    url: '/Administrador/OProductosAl',
+    iosIcon: heartOutline,
+    mdIcon: heartSharp,
+    roles: ['Administrador']
+  },
+  {
+    title: 'Producto Almacen',
+    url: '/Administrador/ProductA',
+    iosIcon: heartOutline,
+    mdIcon: heartSharp,
+    roles: ['Administrador']
+  },
+   {
+    title: 'Movimiento',
+    url: '/Administrador/Movimiento',
+    iosIcon: heartOutline,
+    mdIcon: heartSharp,
+    roles: ['Administrador']
+  },
+  {
+    title: 'Encargado De Almacen',
+    url: '/EncargadoDeAlmacen/Productos',
+    iosIcon: bookmarkOutline,
+    mdIcon: bookmarkOutline,
+    roles: ['Encargado de almacen']
+  },
+  {
+    title: 'Almacenes',
+    url: '/EncargadoDeAlmacen/MostrarOAE',
+    iosIcon: bookmarkOutline,
+    mdIcon: bookmarkOutline,
+    roles: ['Encargado de almacen']
   }
 ];
 
-const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
+//Filtrar páginas según el rol
+const paginasFiltradas = appPages.filter((page) => page.roles.includes(rol));
 
 const Menu: React.FC = () => {
   const location = useLocation();
@@ -69,27 +109,22 @@ const Menu: React.FC = () => {
     <IonMenu contentId="main" type="overlay">
       <IonContent>
         <IonList id="inbox-list">
-          <IonListHeader>Inbox</IonListHeader>
-          <IonNote>hi@ionicframework.com</IonNote>
-          {appPages.map((appPage, index) => {
-            return (
-              <IonMenuToggle key={index} autoHide={false}>
-                <IonItem className={location.pathname === appPage.url ? 'selected' : ''} routerLink={appPage.url} routerDirection="none" lines="none" detail={false}>
-                  <IonIcon aria-hidden="true" slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
-                  <IonLabel>{appPage.title}</IonLabel>
-                </IonItem>
-              </IonMenuToggle>
-            );
-          })}
-        </IonList>
-
-        <IonList id="labels-list">
-          <IonListHeader>Labels</IonListHeader>
-          {labels.map((label, index) => (
-            <IonItem lines="none" key={index}>
-              <IonIcon aria-hidden="true" slot="start" icon={bookmarkOutline} />
-              <IonLabel>{label}</IonLabel>
-            </IonItem>
+          <IonListHeader>Menu</IonListHeader>
+          <IonNote>Usuario: {rol}</IonNote>
+          {/*Mostrar enlaces filtrados */}
+          {paginasFiltradas.map((appPage, index) => (
+            <IonMenuToggle key={index} autoHide={false}>
+              <IonItem
+                className={location.pathname === appPage.url ? 'selected' : ''}
+                routerLink={appPage.url}
+                routerDirection="none"
+                lines="none"
+                detail={false}
+              >
+                <IonIcon slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
+                <IonLabel>{appPage.title}</IonLabel>
+              </IonItem>
+            </IonMenuToggle>
           ))}
         </IonList>
       </IonContent>
